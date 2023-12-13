@@ -1,0 +1,49 @@
+version: "3"
+services:
+  api:
+    profiles: ["app", "backend", "api"]
+    ports:
+      - "9999:9999"
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api/src:/app/src
+    depends_on:
+      - redis_queue
+    networks:
+      - dev-network
+  redis_queue:
+    image: redis/redis-stack-server:latest
+    profiles: ["app", "redis", "backend"]
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_ARGS: --save 60 1 --loglevel warning
+    volumes:
+      # This saves to a local directory
+      # - ./data/dev/redis:/data
+      # This saves in memory for docker
+      - node_redis_volume:/data
+    networks:
+      - dev-network
+  queue_workers:
+    profiles: ["app", "workers", "backend"]
+    ports:
+      - "7777:7777"
+    build:
+      context: ./workers
+      dockerfile: Dockerfile
+    volumes:
+      - ./workers/src:/app/src
+    depends_on:
+      - redis_queue
+    networks:
+      - dev-network
+
+volumes:
+  node_redis_volume:
+
+networks:
+  dev-network:
+    driver: bridge
