@@ -67,7 +67,7 @@ curl --request GET 'http://localhost:9999/health'
 ```bash
 curl --request POST 'http://localhost:9999/job' \
   --header 'Content-Type: application/json' \
-  --data '{ "type": "add", "data": { "x": 1, "y": 2 } }'
+  --data '{ "name": "add", "data": { "x": 1, "y": 2 } }'
 ```
 
 ## Get Job
