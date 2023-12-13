@@ -8,6 +8,21 @@ This does the following:
 - A Worker service to process the submitted jobs from the queue using [BullMQ](https://docs.bullmq.io/)
 - A Redis instance to store the queued jobs
 
+# Goal
+
+[Task Queues](<https://en.wikipedia.org/wiki/Scheduling_(computing)#task_queue>) is a topic I wanted to understand better. So I wanted to create a little project to experiment with this and further understand what is going on.
+
+For NodeJS, I couldn't find many working examples. Most of the guides I encountered would discuss the concept of implementing a Task Queue, or show code snippets of how to initialize a Queue-Worker service with something like [BullMQ](https://docs.bullmq.io/), but didn't go much beyond that.
+
+So I wanted to create this project to [learn by building](https://en.wikipedia.org/wiki/Experiential_learning). This is obviously not production ready, but a starting point for learning.
+
+Some follow-up ideas to experiment further:
+
+- Schedule jobs to send emails and notifications
+- Schedule jobs to scrape web content
+- Monitor third-party datasets and schedule jobs to process the updated data
+- Schedule jobs to process images. I'm thinking I could automate uploading photos from my camera that could trigger jobs to edit, resize, etc. for the web.
+
 # Prerequisite
 
 ```bash
@@ -96,3 +111,5 @@ If you would like to view the jobs being added to the Queue, you can use [Redis 
 - [BullMQ](https://docs.bullmq.io/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Redis](https://redis.io/docs/about/about-stack/)
+- https://www.fullstackpython.com/task-queues.html
+- [What is a Message Queue](https://www.youtube.com/watch?v=oUJbuFMyBDk)
