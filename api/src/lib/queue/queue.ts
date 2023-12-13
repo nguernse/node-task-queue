@@ -1,20 +1,22 @@
-import { Queue } from "bullmq";
+import { Queue, QueueOptions } from "bullmq";
 
-const QueueConfig = {
+const QueueConfig: QueueOptions = {
   connection: {
     host: "redis_queue",
     port: 6379,
   },
-  attempts: 3,
-  backoff: {
-    type: "exponential",
-    delay: 30000,
-  },
-  removeOnComplete: {
-    age: 24 * 3600,
-  },
-  removeOnFail: {
-    age: 24 * 3600,
+  defaultJobOptions: {
+    attempts: 3,
+    backoff: {
+      type: "exponential",
+      delay: 30000,
+    },
+    removeOnComplete: {
+      age: 24 * 3600,
+    },
+    removeOnFail: {
+      age: 24 * 3600,
+    },
   },
 };
 
