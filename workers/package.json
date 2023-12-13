@@ -1,14 +1,14 @@
 {
   "name": "workers",
   "version": "1.0.0",
-  "description": "",
+  "description": "Worker service",
   "main": "index.js",
   "scripts": {
     "dev": "NODE_ENV=dev nodemon index.ts",
     "build": "npx tsc -p tsconfig.json"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "ng",
+  "license": "MIT",
   "dependencies": {
     "@types/node": "^20.10.4",
     "bullmq": "^4.15.2",

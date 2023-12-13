@@ -7,7 +7,7 @@
     "dev": "NODE_ENV=dev nodemon index.ts"
   },
   "author": "ng",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/cookie-parser": "^1.4.6",
     "@types/cors": "^2.8.17",
