@@ -4,9 +4,9 @@ A Node Task Queue setup with Docker.
 
 This does the following:
 
-- An Node/Express API to accept requests that will submit a job to the queue
-- A Worker service to process the submitted jobs from the queue using [BullMQ](https://docs.bullmq.io/)
-- A Redis instance to store the queued jobs
+- A Node/Express API to accept requests that will submit a task to the queue
+- A Worker service to process the submitted tasks from the queue using [BullMQ](https://docs.bullmq.io/)
+- A Redis instance to store the queued tasks
 
 # Goal
 
@@ -35,7 +35,7 @@ cd workers
 npm install
 ```
 
-# Running the Demo Locally
+# Running the Project Locally
 
 ```bash
 docker compose --profile app up --build
@@ -56,7 +56,7 @@ Without `-v` the Redis Queue data will persist. If you want to start with a clea
 
 > ℹ️ Since these services are using containers, they connect with each other using the service name in `docker-compose.yml` and not `localhost`
 
-# Make a HTTP Request to the API
+# Make an HTTP Request to the API
 
 ```bash
 curl --request GET 'http://localhost:9999/health'
