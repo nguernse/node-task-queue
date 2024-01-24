@@ -1,31 +1,19 @@
-import { Job as BullJob } from "bullmq";
-import addData from "./addData";
-import subtractData from "./subtractData";
-import multiplyData from "./multiplyData";
-import divideData from "./divideData";
+import { AnyJob } from "../definitions";
+import math from "./math";
+import scrape from "./scrape";
 
-export default async function jobHandler(job: BullJob): Promise<number | null> {
-  const {
-    name,
-    data: { x, y },
-  } = job;
-
-  let result: number | null = null;
-
-  switch (name) {
+export default async function jobHandler(job: AnyJob): Promise<any> {
+  switch (job.name) {
+    case "metadata":
+    case "pdf":
+    case "screenshot":
+      return scrape(job);
     case "add":
-      result = addData(x, y);
-      break;
     case "subtract":
-      result = subtractData(x, y);
-      break;
-    case "multiply":
-      result = multiplyData(x, y);
-      break;
     case "divide":
-      result = divideData(x, y);
-      break;
+    case "multiply":
+      return math(job);
+    default:
+      return null;
   }
-
-  return result;
 }

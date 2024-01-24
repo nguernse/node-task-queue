@@ -1,13 +1,15 @@
+import { AnyJobRequest } from "../definitions";
+import { Job } from "bullmq";
 import jobQueue from "./queue";
-import { Job as BullJob } from "bullmq";
 
-export type Job = {
-  name: "add" | "subtract" | "multiply" | "divide";
-  data: { x: number; y: number };
-};
-
-export async function addJob(job: Job): Promise<BullJob> {
+export async function addJob(job: AnyJobRequest): Promise<Job> {
   const newJob = await jobQueue.add(job.name, job.data);
 
   return newJob;
+}
+
+export async function bulkAddJob(jobs: AnyJobRequest[]): Promise<Job[]> {
+  const newJobs = await jobQueue.addBulk(jobs);
+
+  return newJobs;
 }

@@ -18,22 +18,10 @@ So I wanted to create this project to [learn by building](https://en.wikipedia.o
 
 Some follow-up ideas to experiment further:
 
-- Schedule jobs to send emails and notifications
-- Schedule jobs to scrape web content
-- Monitor third-party datasets and schedule jobs to process the updated data
-- Schedule jobs to process images. I'm thinking I could automate uploading photos from my camera that could trigger jobs to edit, resize, etc. for the web.
-
-# Prerequisite
-
-```bash
-cd api
-npm install
-```
-
-```bash
-cd workers
-npm install
-```
+- [ ] Schedule jobs to send emails and notifications
+- [x] Schedule jobs to scrape web content
+- [ ] Monitor third-party datasets and schedule jobs to process the updated data
+- [ ] Schedule jobs to process images. I'm thinking I could automate uploading photos from my camera that could trigger jobs to edit, resize, etc. for the web.
 
 # Running the Project Locally
 
@@ -46,6 +34,7 @@ You can take a look at `docker-compose.yml`. This will spin up three services:
 - `api` - This API takes requests on `/job` and submits a job.
 - `redis_queue` - This redis cache will store the jobs to be processed.
 - `queue_workers` - This is the workers that will process the jobs in the queue.
+- `nginx` - A proxy for the `browserless` services to handle scraping web pages.
 
 You can shutdown two ways:
 
@@ -67,7 +56,15 @@ curl --request GET 'http://localhost:9999/health'
 ```bash
 curl --request POST 'http://localhost:9999/job' \
   --header 'Content-Type: application/json' \
-  --data '{ "name": "add", "data": { "x": 1, "y": 2 } }'
+  --data '{ "name": "metadata", "data": { "url": "https://docs.bullmq.io/" } }'
+```
+
+## Submit a Bulk Jobs
+
+```bash
+curl --request POST 'http://localhost:9999/job/bulk' \
+  --header 'Content-Type: application/json' \
+  --data '{ "jobs": [{"name": "metadata", "data": { "url": "https://docs.bullmq.io/" }}, {"name": "metadata", "data": { "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }}] }'
 ```
 
 ## Get Job

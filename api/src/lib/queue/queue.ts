@@ -1,4 +1,5 @@
 import { Queue, QueueOptions } from "bullmq";
+import { AnyJobAction, AnyJobDataType, AnyJobReturnType } from "../definitions";
 
 const QueueConfig: QueueOptions = {
   connection: {
@@ -20,7 +21,10 @@ const QueueConfig: QueueOptions = {
   },
 };
 
-const jobQueue = new Queue("task_queue", QueueConfig);
+const jobQueue = new Queue<AnyJobDataType, AnyJobReturnType, AnyJobAction>(
+  "task_queue",
+  QueueConfig
+);
 
 jobQueue.on("error", (error: Error) => {
   console.log("Job Queue error:", error.message);

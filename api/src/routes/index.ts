@@ -1,25 +1,31 @@
 import { Router } from "express";
-import { addJob } from "../lib/queue/addJob";
+import { addJob, bulkAddJob } from "../lib/queue/addJob";
 import jobQueue from "../lib/queue/queue";
-import { BadRequestError, NotFoundError } from "../lib/errors";
+import { NotFoundError } from "../lib/errors";
+import { AnyJobRequest } from "@/lib/definitions";
+import { Request } from "express";
 
 const baseRouter = Router();
 
 // Submit a job to the queue
-baseRouter.post("/job", async (req, res) => {
-  const { x, y, name } = req.body;
+baseRouter.post("/job", async (req: Request<{}, {}, AnyJobRequest>, res) => {
+  const { name, data } = req.body;
 
-  if (x === undefined || y === undefined || name === undefined) {
-    throw new BadRequestError("Missing required parameters");
-  }
-
-  const job = await addJob({
-    name,
-    data: { x: parseInt(x), y: parseInt(y) },
-  });
+  const job = await addJob({ name, data });
 
   res.status(200).json({ msg: "Job submitted", job_id: job.id });
 });
+
+baseRouter.post(
+  "/job/bulk",
+  async (req: Request<{}, {}, { jobs: AnyJobRequest[] }>, res) => {
+    const { jobs } = req.body;
+
+    const bulkJobs = await bulkAddJob(jobs);
+
+    res.status(200).json({ msg: "Jobs submitted", jobs: bulkJobs });
+  }
+);
 
 baseRouter.get("/job/:id", async (req, res) => {
   const { id } = req.params;

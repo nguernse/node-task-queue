@@ -1,18 +1,16 @@
 import { Job, Worker, WorkerOptions } from "bullmq";
 import jobHandler from "../job-handlers";
+import Config from "../config";
 
 const WorkerConfig: WorkerOptions = {
-  connection: {
-    host: "redis_queue",
-    port: 6379,
-  },
+  connection: Config.workerConnection,
   autorun: false,
 };
 
 const taskWorker = new Worker("task_queue", jobHandler, WorkerConfig);
 
-taskWorker.on("completed", (job: Job, result: number | null) => {
-  console.log(`Job completed with result ${result}`);
+taskWorker.on("completed", (job: Job, result: any) => {
+  console.log("Job completed with result", result);
 });
 
 taskWorker.on("failed", (job: any, error: Error) => {

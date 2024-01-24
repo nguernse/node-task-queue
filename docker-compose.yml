@@ -4,6 +4,8 @@ services:
     profiles: ["app", "backend", "api"]
     ports:
       - "9999:9999"
+    expose:
+      - "9999"
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -11,8 +13,7 @@ services:
       - ./api/src:/app/src
     depends_on:
       - redis_queue
-    networks:
-      - dev-network
+      - nginx
   redis_queue:
     image: redis/redis-stack-server:latest
     profiles: ["app", "redis", "backend"]
@@ -25,12 +26,12 @@ services:
       # - ./data/dev/redis:/data
       # This saves in memory for docker
       - node_redis_volume:/data
-    networks:
-      - dev-network
   queue_workers:
     profiles: ["app", "workers", "backend"]
     ports:
       - "7777:7777"
+    expose:
+      - "7777"
     build:
       context: ./workers
       dockerfile: Dockerfile
@@ -38,12 +39,26 @@ services:
       - ./workers/src:/app/src
     depends_on:
       - redis_queue
-    networks:
-      - dev-network
+      - nginx
+  nginx:
+    profiles: ["app", "scraper"]
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "8888:80"
+    expose:
+      - "80"
+  browserless_one:
+    profiles: ["app", "scraper"]
+    image: ghcr.io/browserless/chrome:latest
+    environment:
+      - HEALTH=true
+  browserless_two:
+    profiles: ["app", "scraper"]
+    image: ghcr.io/browserless/chrome:latest
+    environment:
+      - HEALTH=true
 
 volumes:
   node_redis_volume:
-
-networks:
-  dev-network:
-    driver: bridge
