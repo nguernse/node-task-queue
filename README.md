@@ -35,6 +35,7 @@ You can take a look at `docker-compose.yml`. This will spin up three services:
 - `redis_queue` - This redis cache will store the jobs to be processed.
 - `queue_workers` - This is the workers that will process the jobs in the queue.
 - `nginx` - A proxy for the `browserless` services to handle scraping web pages.
+- `web` - A frontend application to view the jobs (WIP).
 
 You can shutdown two ways:
 
