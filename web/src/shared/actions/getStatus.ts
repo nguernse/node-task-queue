@@ -1,10 +1,10 @@
 "use server";
 
-import api from "../utils/api";
+import API from "../utils/api";
 
 export default async function getStatus(): Promise<string> {
-  const response = await api("/health");
-  const { msg } = await response.json();
+  const data = await API.get("/health");
+  const { message } = data;
 
-  return msg;
+  return message;
 }
